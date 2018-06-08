@@ -9,7 +9,9 @@ import {
   Select,
   ChoiceList,
   Banner,
-  Layout
+  Layout,
+  Sticky,
+  TextContainer,
 } from '@shopify/polaris';
 import '@shopify/polaris/styles.css';
 
@@ -38,7 +40,7 @@ class Playground extends React.Component {
     moreThanOneCat: '',
     carpetMatchDrapes: '',
     show: true,
-    funnyQuip: null,
+    container: null,
   };
 
   get dateableAge() {
@@ -51,7 +53,6 @@ class Playground extends React.Component {
     if (this.state.moveOutEarly[0] === true) {
       if (this.state.gender === Gender.MALE) {
         age--;
-        alert('shit');
       } else if (this.state.gender === Gender.FEMALE) {
         age++;
       } else if (this.state.gender === Gender.LGBTQ) {
@@ -59,6 +60,66 @@ class Playground extends React.Component {
       }
     } else if (this.state.moveOutEarly[0] === false && this.state.gender === Gender.LGBTQ) {
       age -= 2;
+    }
+
+    if (this.state.kidBeforeEighteen[0] === true) {
+      if (this.state.gender === Gender.MALE) {
+        age -= 2;
+      } else if (this.state.gender === Gender.FEMALE) {
+        age += 5;
+      } else if (this.state.gender === Gender.LGBTQ) {
+        age += 7;
+      }
+    }
+
+    if (this.state.emancipateFromParents[0] === true && (this.state.gender === Gender.MALE || this.state.gender === Gender.FEMALE)) {
+      age -= 2;
+    } else if (this.state.emancipateFromParents[0] === false) {
+      age += 2;
+    }
+
+    if (this.state.ginger[0] === true) {
+      age += 10;
+    } else if (this.state.ginger[0] === false) {
+      age--;
+    }
+
+    if (this.state.currentlyAlone[0] === true) {
+      if (this.state.gender === Gender.MALE) {
+        age--;
+      } else if (this.state.gender === Gender.FEMALE) {
+        age += 4;
+      } else if (this.state.gender === Gender.LGBTQ) {
+        age -= 2;
+      }
+    } else if (this.state.currentlyAlone[0] === false) {
+      if (this.state.gender === Gender.MALE) {
+        age++;
+      } else if (this.state.gender === Gender.FEMALE) {
+        age += 2;
+      } else if (this.state.gender === Gender.LGBTQ) {
+        age--;
+      }
+    }
+
+    if (this.state.moreThanOneCat[0] === true) {
+      age += 20;
+    }
+
+    if (this.state.carpetMatchDrapes[0] === true) {
+      if (this.state.gender === Gender.MALE) {
+        age--;
+      } else if (this.state.gender === Gender.FEMALE) {
+        age += 25;
+      } else if (this.state.gender === Gender.LGBTQ) {
+        age -= 2;
+      }
+    } else if (this.state.carpetMatchDrapes[0] === false) {
+      if (this.state.gender === Gender.MALE) {
+        age += 5;
+      } else if (this.state.gender === Gender.FEMALE) {
+        age += 3;
+      }
     }
 
     return Math.floor(age);
@@ -88,62 +149,71 @@ class Playground extends React.Component {
     return status;
   }
 
-  /*
+  get funnyQuip() {
+    let quip = null;
 
-Question flow
+    if (this.state.gender === Gender.UNDETERMINED) {
+      return quip;
+    }
 
-1. Did the person have a kid before the age of 18? 
-    if yes && male
-      subtract 2
-    else if yes && female
-      add 5
-    else if LGBTQ 
-      add 7
-1. Did the person emancipate themselves from their parents?
-    if yes && male || female 
-      subtract 2
-    else
-      add 2
-1. Ginger me timbers?
-    if yes
-      add 10 & print “cause Gingers have no soul”
-    else
-      subtract 1
-1. Are you currently alone?
-    if yes && male
-      subtract 1 & print “you need the options”
-    else if yes && female
-      add 4 & print “older is more your style”
-    else if yes && LGBTQ
-      subtract 2 & print “Ru-Paul would be so         proud!”
-    else if no && male
-      add 1 & print “why are you looking at this with       someone there?”
-    else if no && female 
-      add 2 & print “Don’t you have a kitchen to        clean?”
-    else if no && LGBTQ 
-      subtract 1 & print “Why were  we not invited to       this party?” 
-1. Do you have more than one cat?
-    if yes 
-      add 20 & print “No one needs a cat.”
-    else  
-      print “Good.  No one needs a cat.”
-1. Does the carpet match the drapes?
-    if yes && male
-      subtract 1 & print “What are you doing with       your life?”
-    if yes && female
-      add 25 & print “Why is there carpet?
-    if yes && LGBTQ
-      subtract 2 & print “That’s just for today right?”
-    if no && male
-      add 5 and print “Are you sure you selected the      right gender?”
-    if no && female
-      add 3
+    if (this.state.moveOutEarly[0] === true) {
+      if (this.state.gender === Gender.MALE) {
+        quip = 'Good for you. She‘s growing up early so you don‘t have to.';
+      }
+    }
 
-  */
+    if (this.state.ginger[0] === true) {
+      quip = 'Gingers have no soul.';
+    }
+
+    if (this.state.currentlyAlone[0] === true) {
+      if (this.state.gender === Gender.MALE) {
+        quip = 'You need the options.';
+      } else if (this.state.gender === Gender.FEMALE) {
+        quip = 'Older is more your style.';
+      } else if (this.state.gender === Gender.LGBTQ) {
+        quip = 'RuPaul would be so proud!';
+      }
+    } else if (this.state.currentlyAlone[0] === false) {
+      if (this.state.gender === Gender.MALE) {
+        quip = 'Why are you looking at this with someone there?';
+      } else if (this.state.gender === Gender.FEMALE) {
+        quip = 'Don’t you have a kitchen to clean?';
+      } else if (this.state.gender === Gender.LGBTQ) {
+        quip = 'Why were we not invited to this party?';
+      }
+    }
+
+    if (this.state.moreThanOneCat[0] === true) {
+      quip = 'No one needs a cat.';
+    } else if (this.state.moreThanOneCat[0] === false) {
+      quip = 'Good. No one needs a cat.';
+    }
+
+    if (this.state.carpetMatchDrapes[0] === true) {
+      if (this.state.gender === Gender.FEMALE) {
+        quip = 'Why is there carpet?';
+      } else if (this.state.gender === Gender.LGBTQ) {
+        quip = 'That‘s just for today right?';
+      }
+    } else if (this.state.carpetMatchDrapes[0] === false) {
+      if (this.state.gender === Gender.MALE) {
+        quip = 'Are you sure you selected the right gender?';
+      }
+    }
+
+    return quip;
+  }
+
+  componentDidMount() {
+
+  }
 
   render() {
     const funnyQuipBanner = (
-      <Banner title={this.state.funnyQuip} />
+      <Sticky>
+        <Banner title={this.funnyQuip} />
+      </Sticky>
     );
 
     const options = (
@@ -233,8 +303,15 @@ Question flow
         <Page singleColumn title="Creepy Calculator">
           <Layout>
             <Layout.Section>
-              <Banner title={this.bannerText} status={this.bannerState} />
-              {this.state.funnyQuip !== null ? funnyQuipBanner : null}
+              <div style={{zIndex: 50, position: 'relative'}}>
+                <TextContainer>
+                  <Sticky>
+                    <Banner title={this.bannerText} status={this.bannerState} />
+                  </Sticky>
+
+                  {this.funnyQuip !== null ? funnyQuipBanner : null}
+                </TextContainer>
+              </div>
             </Layout.Section>
             <Layout.Section>
               <Card>
