@@ -133,6 +133,9 @@ class Playground extends React.Component {
     } else if (this.dateableAge < 18) {
       text = 'Your lowest dateable age involves prison time. Stop taking dating advice from Dazed and Confused.';
     }
+    else if (this.dateableAge > (this.state.age * 2)) {
+      text = `Your lowest dateable age is ${this.dateableAge} without being creepy.  But, you are a GOLD DIGGER.`;
+    }
 
     return text;
   }
