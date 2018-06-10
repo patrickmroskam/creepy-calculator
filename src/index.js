@@ -145,7 +145,9 @@ class Playground extends React.Component {
 
     if (this.dateableAge < 18 || this.state.gender === Gender.UNDETERMINED) {
       status = BannerStates.CRITICAL;
-    } else {
+    } else if (this.dateableAge > (this.state.age * 2)) {
+      status = BannerStates.WARNING;
+    } else {
       status = BannerStates.SUCCESS;
     }
 
